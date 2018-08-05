@@ -256,9 +256,9 @@
 
         $data = $results[0];
 
-        $results2 = $sql->select("CALL sp_userspasswordsrecovers_create(:iduser, :desip)", array(
+        $results2 = $sql->select("CALL sp_userspasswordsrecovers_create(:iduser)", array(
             ":iduser"=>$data["iduser"],
-            ":desip"=>$_SERVER["REMOTE_ADDR"]
+            //":desip"=>$_SERVER["REMOTE_ADDR"]
         ));
 
         if (count($results2) === 0)

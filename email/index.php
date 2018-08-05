@@ -8,7 +8,8 @@
 //This should be done in your php.ini, but this is how to do it if you don't have access to that
 date_default_timezone_set('Etc/UTC');
 
-require(vendor/autoload.php);
+//require(vendor/autoload.php);
+require '../PHPMailerAutoload.php';
 
 //Create a new PHPMailer instance
 $mail = new PHPMailer;
@@ -41,19 +42,19 @@ $mail->SMTPSecure = 'tls';
 $mail->SMTPAuth = true;
 
 //Username to use for SMTP authentication - use full email address for gmail
-$mail->Username = "fblong.longuim657@gmail.com";
+$mail->Username = "robertofabricio822@gmail.com";
 
 //Password to use for SMTP authentication
-$mail->Password = "og*3dql)&s4+rn";
+$mail->Password = "";
 
 //Set who the message is to be sent from
-$mail->setFrom('fblong.longuim657@gmail.com', 'First Last');
+$mail->setFrom('robertofabricio822@gmail.com', 'First Last');
 
 //Set an alternative reply-to address
 //$mail->addReplyTo('replyto@example.com', 'First Last');
 
 //Set who the message is to be sent to
-$mail->addAddress('fabriciolonguim@gmail.com', 'John Doe');
+$mail->addAddress('sitefabriciounix@gmail.com', 'John Doe');
 
 //Set the subject line
 $mail->Subject = 'PHPMailer GMail SMTP test';

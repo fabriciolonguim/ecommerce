@@ -8,7 +8,7 @@
 //This should be done in your php.ini, but this is how to do it if you don't have access to that
 date_default_timezone_set('Etc/UTC');
 
-require '../PHPMailerAutoload.php';
+require("vendor/autoload.php");
 
 //Create a new PHPMailer instance
 $mail = new PHPMailer;
@@ -44,7 +44,7 @@ $mail->SMTPAuth = true;
 $mail->Username = "robertofabricio822@gmail.com";
 
 //Password to use for SMTP authentication
-$mail->Password = "Ludinho2016";
+$mail->Password = "";
 
 //Set who the message is to be sent from
 $mail->setFrom('robertofabricio822@gmail.com', 'Fabricio Roberto Longuim');

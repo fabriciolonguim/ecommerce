@@ -44,7 +44,7 @@ $mail->SMTPAuth = true;
 $mail->Username = "robertofabricio822@gmail.com";
 
 //Password to use for SMTP authentication
-$mail->Password = "Ludinho2016";
+$mail->Password = "";
 
 //Set who the message is to be sent from
 $mail->setFrom('robertofabricio822@gmail.com', 'Fabricio Roberto Longuim');
@@ -53,7 +53,7 @@ $mail->setFrom('robertofabricio822@gmail.com', 'Fabricio Roberto Longuim');
 //$mail->addReplyTo('replyto@example.com', 'First Last');
 
 //Set who the message is to be sent to
-$mail->addAddress('fblong.longuim657@gmail.com', 'Fabricio Roberto Longuim');
+$mail->addAddress('sitefabriciounix@gmail.com', 'Fabricio Roberto Longuim');
 
 //Set the subject line
 $mail->Subject = 'PHPMailer GMail SMTP test';

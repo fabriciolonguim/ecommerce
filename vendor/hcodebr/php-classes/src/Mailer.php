@@ -1,36 +1,41 @@
 <?php
 
-	namespace Hcode;
+	namespcade Hcode;
 
 	use Rain\Tpl;
 
-	private $mail;
-
 	class Mailer {
 
-		const USERNAME = "robertofabricio@gmail.com";
-		const PASSWORD = "Ludinho2016";
-		const NAME_FROM = "Fabricio Roberto Longuim";
+		const USERNAME = "robertofabricio822@gmail.com";
+		const PASSWORD = "";
+		const NAME_FROM = "Hcode Store";
+
+		private $mail;
 
 		public function __construct($toAddress, $toName, $subject, $tplName, $data = array())
 		{
 
 			$config = array(
-					"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/view/email/",
+					"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/views/email/",
 					"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/views-cache/",
 					"debug"         => false // set to false to improve the speed
 				   );
 
-			Tpl::configure($config);
+			Tpl::configure( $config );
 
 			$tpl = new Tpl;
 
 			foreach ($data as $key => $value) {
-				$tpl->assing($key, $value);
+				$tpl->assign($key, $value);
 			}
 
 			$html = $tpl->draw($tplName, true);
 
+			date_default_timezone_set('Etc/UTC');
+
+			//require '../PHPMailerAutoload.php';
+
+			//Create a new PHPMailer instance
 			$this->mail = new \PHPMailer;
 
 			//Tell PHPMailer to use SMTP
@@ -40,7 +45,10 @@
 			// 0 = off (for production use)
 			// 1 = client messages
 			// 2 = client and server messages
-			$this->mail->SMTPDebug = 2;
+			$this->mail->SMTPDebug = 0;
+
+			//Ask for HTML-friendly debug output
+			$this->mail->Debugoutput = 'html';
 
 			//Set the hostname of the mail server
 			$this->mail->Host = 'smtp.gmail.com';
@@ -49,7 +57,7 @@
 			// if your network does not support SMTP over IPv6
 
 			//Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-			$thsi->mail->Port = 587;
+			$this->mail->Port = 587;
 
 			//Set the encryption system to use - ssl (deprecated) or tls
 			$this->mail->SMTPSecure = 'tls';
@@ -80,11 +88,19 @@
 			$this->mail->msgHTML($html);
 
 			//Replace the plain text body with one created manually
-			$this->mail->AltBody = 'Teste de e-mail com PHP7!';
+			$this->mail->AltBody = 'This is a plain-text message body';
 
 			//Attach an image file
 			//$mail->addAttachment('images/phpmailer_mini.png');
-			if (!$mail->send()) {
+
+			//send the message, check for errors
+		
+
+			public function send()
+			{
+
+					//return $this->mail->send();
+					if (!$mail->send()) {
 			    echo "Mailer Error: " . $mail->ErrorInfo;
 			} else {
 			    echo "Message sent!";
@@ -111,16 +127,12 @@
 			    imap_close($imapStream);
 
 			    return $result;
-			
-
+			}
+			}
 		}
-
-		public function send()
-		{
-			return $this->mail->send();
-		}
-
 	}
+
+
 
 
 
