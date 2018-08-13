@@ -1,6 +1,6 @@
 <?php
 
-	namespcade Hcode;
+	namespace Hcode;
 
 	use Rain\Tpl;
 
@@ -31,7 +31,7 @@
 
 			$html = $tpl->draw($tplName, true);
 
-			date_default_timezone_set('Etc/UTC');
+			//date_default_timezone_set('Etc/UTC');
 
 			//require '../PHPMailerAutoload.php';
 
@@ -94,13 +94,13 @@
 			//$mail->addAttachment('images/phpmailer_mini.png');
 
 			//send the message, check for errors
-		
+			}
 
 			public function send()
 			{
 
-					//return $this->mail->send();
-					if (!$mail->send()) {
+					return $this->mail->send();
+				/*	if(!$mail->send()) {
 			    echo "Mailer Error: " . $mail->ErrorInfo;
 			} else {
 			    echo "Message sent!";
@@ -126,11 +126,11 @@
 			    $result = imap_append($imapStream, $path, $mail->getSentMIMEMessage());
 			    imap_close($imapStream);
 
-			    return $result;
+			    return $result; */
 			}
-			}
+
 		}
-	}
+
 
 
 

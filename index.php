@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 require_once("vendor/autoload.php");
 
@@ -6,6 +6,7 @@ use \Slim\Slim;
 use \Hcode\Page;
 use \Hcode\PageAdmin;
 use \Hcode\Model\User;
+use \Hcode\Model\Category;
 
 $app = new Slim();
 
@@ -23,17 +24,17 @@ $app->get('/', function() {
     $page = new Page();
 
     $page->setTpl("index");
-	
+
 });
 
 $app->get('/admin', function() {
 
     User::verifyLogin();
-    
+
     $page = new PageAdmin();
 
     $page->setTpl("index");
-	
+
 });
 
 $app->get('/admin/login', function() {
@@ -167,7 +168,7 @@ $app->get("/admin/forgot", function() {
 
 });
 
-$app->post("/admin/forgot", function() { 
+$app->post("/admin/forgot", function() {
 
     $user = User::getForgot($_POST["email"]);
 
@@ -184,6 +185,128 @@ $app->get("/admin/forgot/sent", function() {
     ]);
 
     $page->setTpl("forgot-sent");
+
+});
+
+$app->get("/admin/forgot/reset", function(){
+
+    $user = User::validForgotDecrypt($_GET["code"]);
+
+      $page = new PageAdmin([
+        "header"=>false,
+        "footer"=>false
+    ]);
+
+    $page->setTpl("forgot-reset", array(
+        "name"=>$user["desperson"],
+        "code"=>$_GET["code"]
+    ));
+});
+
+$app->post("/admin/forgot/reset", function(){
+
+     $forgot = User::validForgotDecrypt($_POST["code"]);
+
+     User::setForgotUsed($forgot["idrecovery"]);
+
+     $user = new User();
+
+     $user->get((int)$forgot["iduser"]);
+
+     $password = password_hash($_POST["password"], PASSWORD_DEFAULT, ["cost"=>12]);
+
+     $user->setPassword($password);
+
+      $page = new PageAdmin([
+        "header"=>false,
+        "footer"=>false
+    ]);
+
+    $page->setTpl("forgot-reset-success");
+
+});
+
+$app->get("/admin/categories", function() {
+
+    User::verifyLogin();
+
+    $categories = Category::listAll();
+
+    $page = new PageAdmin();
+
+    $page->setTpl("categories", [
+        'categories'=>$categories
+    ]);
+});
+
+$app->get("/admin/categories/create", function() {
+
+    User::verifyLogin();
+
+    $page = new PageAdmin();
+
+    $page->setTpl("categories-create");
+});
+
+$app->post("/admin/categories/create", function() {
+
+    User::verifyLogin();
+
+    $category = new Category();
+
+    $category->setData($_POST);
+
+    $category->save();
+
+    header('Location: /admin/categories');
+    exit;
+});
+
+$app->get("/admin/categories/:idcotegory/delete", function($idcotegory){
+
+    User::verifyLogin();
+
+    $category = new Category();
+
+    $category->get((int)$idcotegory);
+
+    $category->delete();
+
+    header('Location: /admin/categories');
+    exit;
+});
+
+$app->get("/admin/categories/:idcotegory", function($idcotegory){
+
+    User::verifyLogin();
+
+    $category = new Category();
+
+    $category->get((int)$idcotegory, [
+      'category'=>$category->getValues()
+    ]);
+
+    $page = new PageAdmin();
+
+    $page->setTpl("categories-update");
+
+
+});
+
+$app->post("/admin/categories/:idcotegory", function($idcotegory){
+
+    User::verifyLogin();
+
+    $category = new Category();
+
+    $category->get((int)$idcotegory);
+
+    $category->setData($_POST);
+
+    $category->save();
+
+    header('Location: /admin/categories');
+    exit;
 
 });
 
